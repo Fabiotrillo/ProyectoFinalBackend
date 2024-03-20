@@ -1,0 +1,38 @@
+
+<h1>Bienvenido, {{user.FullName}}</h1>
+<a href="/api/sessions/logout"><button id="logout">LogOut</button></a>
+<a href="/profile"><button>Profile</button></a>
+<h2>Nuestros productos</h2>
+<div class="container">
+    {{!-- Itera sobre los productos en el carrito y muestra la información --}}
+    {{#each products.docs}}
+    <div class="product-card">
+        <h2>{{title}}</h2>
+        <img src="{{image}}" alt="{{this.title}}" class="product-image">
+        <p class="product-description">{{this.description}}</p>
+        <p class="product-price">Precio: ${{this.price}}</p>
+        <p class="product-stock">Stock: {{this.stock}}</p>
+
+        <form action="/api/carts" method="post">
+            <input type="hidden" name="products" value="{{this._id}}">
+            <input type="hidden" name="quantity" value= 1>
+            <input type="submit" value="Agregar al Carrito">
+        </form>
+
+    
+    </div>
+    {{/each}} 
+</div>
+
+<div id="pagination">
+        <!-- Pagination -->
+        {{#if products.hasPrevPage}}
+            <a href="{{ products.prevLink }}">Anterior</a>
+        {{/if}}
+        {{#if products.hasNextPage}}
+            <a href="{{ products.nextLink }}">Siguiente</a>
+        {{else}}
+            <p>No hay productos disponibles.</p>
+        {{/if}}
+    </div>
+

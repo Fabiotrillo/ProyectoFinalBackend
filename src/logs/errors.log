@@ -1,0 +1,152 @@
+{"level":"http","message":"/ - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/api/sessions/login - method: POST"}
+{"level":"http","message":"/ - method: GET"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/loggerTest - method: GET"}
+{"level":"debug","message":"Debug message"}
+{"level":"http","message":"HTTP message"}
+{"level":"info","message":"Info message"}
+{"level":"http","message":"/loggerTest - method: GET"}
+{"level":"debug","message":"Debug message"}
+{"level":"http","message":"HTTP message"}
+{"level":"info","message":"Info message"}
+{"level":"http","message":"/loggerTest - method: GET"}
+{"level":"debug","message":"Debug message"}
+{"level":"http","message":"HTTP message"}
+{"level":"info","message":"Info message"}
+{"level":"warning","message":"Warning message"}
+{"level":"error","message":"Error message"}
+{"level":"fatal","message":"Fatal message"}
+{"level":"http","message":"/loggerTest - method: GET"}
+{"level":"debug","message":"Debug message"}
+{"level":"http","message":"HTTP message"}
+{"level":"info","message":"Info message"}
+{"level":"warning","message":"Warning message"}
+{"level":"error","message":"Error message"}
+{"level":"fatal","message":"Fatal message"}
+{"level":"http","message":"/loggerTest - method: GET"}
+{"level":"debug","message":"Debug message"}
+{"level":"http","message":"HTTP message"}
+{"level":"info","message":"Info message"}
+{"level":"warning","message":"Warning message"}
+{"level":"error","message":"Error message"}
+{"level":"fatal","message":"Fatal message"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/favicon.ico - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/resetpassword - method: GET"}
+{"level":"http","message":"/ - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: POST"}
+{"level":"http","message":"/forgotpassword - method: POST"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/login - method: POST"}
+{"level":"http","message":"/ - method: GET"}
+{"level":"http","message":"/api/sessions/logout - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/ - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/products - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: GET"}
+{"level":"http","message":"/api/sessions/forgotpassword - method: POST"}
+{"level":"http","message":"/login - method: GET"}
+{"level":"http","message":"/forgotpassword - method: GET"}
