@@ -74,7 +74,7 @@ class UserController {
     const userId = req.params.userId;
 
     if (!userId) {
-      return res.status(400).json({ error: "Debe ingresar Id. Usuario" });
+      return res.status(400).json({ error: "Usuario no encontrado" });
     }
 
     const updatedUserData = req.body;

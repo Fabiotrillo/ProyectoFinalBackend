@@ -13,16 +13,16 @@ class ProductRepository {
       }
     }
   
-    async getProductByID(productId) {
+    async getProductByID(pid) {
       try {
-        const result = await this.dao.getProductByID(productId);
+        const result = await this.dao.getProductByID(pid);
         return result
       } catch (error) {
         throw new Error(`Error: ${error.message}`);
       }
     }
   
-    async createProduct(productData) {
+    async createProduct (productData) {
       try {
         const result = await this.dao.createProduct(productData);
         return result;
@@ -40,9 +40,9 @@ class ProductRepository {
       }
     }
   
-    async deleteProduct(productId) {
+    async deleteProductByID(productId) {
       try {
-        const result = await this.dao.deleteProduct(productId);
+        const result = await this.dao.deleteProductByID(productId);
         return result;
       } catch (error) {
         throw new Error(`Error en lectura de archivos: ${error.message}`);

@@ -62,10 +62,7 @@ class ProductManager {
     getProductByID = async (pid) => {
         try {
             const product = await productModel.findOne({ _id: pid });
-            return {
-                status: "Success",
-                msg: product,
-            };
+            return product
         } catch (error) {
             console.error('Error al intentar obtener un producto por ID:', error.message);
             return {
@@ -76,43 +73,27 @@ class ProductManager {
     }
 
     // Crear un nuevo producto
-    createProduct = async (title, description, price, code, stock, category, thumbnail) => {
+    createProduct  = async (product) => {
+
         try {
-            const newProduct = await productModel.create({
-                title,
-                description,
-                price,
-                code,
-                stock,
-                category,
-                thumbnail,
-            });
-
-
-
-            return {
-                status: "Success",
-                msg: newProduct,
-            };
-        } catch (error) {
-            console.error('Error al intentar crear un producto:', error.message);
-            return {
-                status: "Error",
-                msg: error.message,
-            };
+          const result = await productModel.create(product);
+          return result;
         }
-    }
+        catch {
+          console.log("Error en lectura de archivos!!");
+        }
+       };
 
     // Eliminar un producto por ID
-    deleteProductByID = async (id) => {
+    deleteProductByID = async (pid) => {
         try {
-            await productModel.findByIdAndDelete(id);
+            await productModel.findByIdAndDelete(pid);
             return {
                 status: "Success",
-                msg: `Producto con ID ${id} eliminado correctamente.`,
+                msg: `Producto eliminado correctamente.`,
             };
         } catch (error) {
-            console.error('Error al intentar eliminar un producto por ID:', error.message);
+            console.error(`Error al intentar eliminar un producto por ID:${pid}`, error.message);
             return {
                 status: "Error",
                 msg: error.message,

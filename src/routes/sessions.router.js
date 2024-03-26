@@ -95,8 +95,9 @@ router.post("/forgotpassword", async(req,res)=>{
         if(!user){
             res.send("Error no existe el usuario")
         }
-        const token = generateEmailToken(email,10)
+        const token = generateEmailToken(email,10000)
         await sendRecoveryPass(email,token)
+        
 
         res.send('Se ha enviado un correo para restablecer contraseña')
 
@@ -109,9 +110,11 @@ router.post("/forgotpassword", async(req,res)=>{
 
 router.post('/resetpassword', async (req,res)=>{
     const token = req.query.token
-     
+   
      const {email,newPassword}  = req.body;  
+     
      const validToken = verifyEmailToken(token)
+
 
      if(!validToken){
         return  res.status(401).json({
@@ -119,35 +122,44 @@ router.post('/resetpassword', async (req,res)=>{
                     msg: 'Invalid Token'
                });  
      }
+    
 
-     if(!email || !password) return res.status(400).send({
+     if(!email || !newPassword) return res.status(400).send({
         status:"Error",
         message: "Datos incorrectos"
      })
+    
      const user = await userModel.findOne({email});
      if (!user) return res.status(404).send({
-        status:"Error",
+        status:"Error nuevo",
         message:"El usuario no existe"
      })
 
-     const newHashPassword = createHash(newPassword);
-     if (newPasswordHash === user.password) {
-        return res.status(400).send({
-            status: "Error",
-            message: "La nueva contraseña no puede ser igual a la anterior"
-        });
+     if(validatePassword(newPassword,user)){
+        return res.send("no se puede usar la misma contraseña")
     }
 
-     await userModel.updateOne({_id:user._id},{$set:{password:newHashPassword}});
-     res.send({
-        status:"Succes",
-        message:"Se ha restablecido la contraseña correctamente"
-    })
+    const userData = {
+        ...user._doc,
+        password:createHash(newPassword)
+    }
+
+    const updateUser = await userModel.findOneAndUpdate({email},userData);
+
+    res.render("login", {message:"Contraseña actualizada"})
+
 
 });
 
 router.get('/current', (req, res) => {
     if (req.session && req.session.user) {
+        let user = req.user;
+        if (!user){
+            res.send({
+                status: "error",
+                msg: "No hay usuario activo",
+              })
+        }
        
     const userDto = new GetUserDto(req.session.user);
       res.send({ status: 'success', payload: userDto });

@@ -28,14 +28,12 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  image: {
+  thumbnail: {
     type: String,
     required: true
   },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Referencia al modelo de usuario
-}
+  owner: String
+
 });
 
 productSchema.plugin(mongoosePaginate)

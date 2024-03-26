@@ -1,4 +1,4 @@
-import { ProductService } from "../repository/index.js";
+import { ProductService, UserService } from "../repository/index.js";
 import { productErrorDictionary, customizeError } from "../utils/errors.js";
 
 class ProductController {
@@ -26,7 +26,7 @@ class ProductController {
     }
   };
 
-  static getProductById = async (req, res) => {
+  static getProductByID = async (req, res) => {
     const pid = req.params.pid;
     if (!pid) {
       return res.status(400).json({ error: "Debe ingresar Id. Product" });
@@ -34,11 +34,14 @@ class ProductController {
 
     try {
       const result = await ProductService.getProductByID(pid);
+      console.log(result)
+      if (!result) { // Manejar el caso en que no se encuentre ningún producto
+          return res.status(404).json({ status: "error", message: "Producto no encontrado" });
+      }
       req.logger.info("Producto encontrado con éxito");
       res.status(200).json({
-        status: "success",
-        msg: "Product hallado",
-        product: result.msg,
+          status: "success",
+          msg: result 
       });
     } catch (error) {
       const formattedError = customizeError('FETCHING_PRODUCTS', error.message, productErrorDictionary);
@@ -47,41 +50,52 @@ class ProductController {
     }
   };
 
-  static createProduct = async (req, res) => {
+  static createProduct  = async (req, res) => {
+
+    const owner = req.user && req.user.email ? req.user.email : "admin";
+   
+    console.log(owner)
     const {
       title,
       description,
-      price,
       code,
+      price,
       stock,
       category,
       thumbnail,
-    } = req.body;
+    } = req.body; //json con el producto
+    if (
+      !title ||
+      !description ||
+      !code ||
+      !price ||
+      !stock ||
+      !category
+    ) {
+      return res.status(400).send("datos incompletos")
+      };
 
-    if (!title || !description || !price || !code || !stock || !category || !thumbnail) {
-      return res.status(400).json({ error: "Datos incompletos" });
-    }
+      
 
-    const ownerId = req.user._id || 'admin';
-
+    const product = {
+      title,
+      description,
+      code,
+      price,
+      stock,
+      category,
+      thumbnail,
+      owner
+    };
     try {
-      const result = await ProductService.createProduct(
-        title,
-        description,
-        price,
-        code,
-        stock,
-        category,
-        thumbnail,
-        ownerId
-      );
-      req.logger.info("Producto creado con éxito");
-      res.status(201).json({
-        status: "success",
-        msg: "Producto creado",
-        product: result.msg,
+      const result = await ProductService.createProduct(product);
+      
+      res.send({
+        status: "succes",
+        msg: "Producto Creado con exito",
+        result,
       });
-    } catch (error) {
+    } catch {
       const formattedError = customizeError('CREATE_PRODUCT', error.message, productErrorDictionary);
       req.logger.error(`Error en lectura de archivos: ${formattedError}`);
       res.status(500).json({ error: "Error interno del servidor" });
@@ -116,7 +130,7 @@ class ProductController {
     }
   };
 
-  static deleteProduct = async (req, res) => {
+  static deleteProductByID = async (req, res) => {
     const pid = req.params.pid;
 
     if (!pid) {
@@ -125,17 +139,25 @@ class ProductController {
 
     try {
       const product = await ProductService.getProductByID(pid);
-
+      
       if (!product) {
         return res.status(404).json({ status: "error", message: "Producto no encontrado" });
       }
 
-      if (req.user.role === 'admin' || (req.user.role === 'premium' && product.owner === req.user.email)) {
-        await ProductService.deleteProductByID(pid);
-        return res.status(200).json({ status: "success", message: `Producto con ID ${pid} eliminado correctamente.` });
-      } else {
-        return res.status(403).json({ status: "error", message: "No estás autorizado para eliminar este producto" });
-      }
+      if (req.user.role !== "admin" && product.owner !== req.user.email) {
+        return res.status(403).send({
+            status: "error",
+            message: `No tiene permisos para eliminar este producto`,
+        });
+    }
+  
+    await ProductService.deleteProductByID(product);
+    
+    res.status(200).json({
+      status: "success",
+      msg: `Producto Eliminado con el id: ${pid}`
+    })
+
     } catch (error) {
       const formattedError = customizeError('DELETE_PRODUCT', error.message, productErrorDictionary);
       req.logger.error(`Error al eliminar producto: ${formattedError}`);

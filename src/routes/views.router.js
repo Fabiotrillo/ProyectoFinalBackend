@@ -32,9 +32,11 @@ router.get('/products', privateAccess, async (req, res) => {
 
         
         const productsResponse = await manager.getProducts(limit, page, sort, category, availability, query);
+        const products = productsResponse.msg;
+
         
 
-        res.render('products',  {products: productsResponse.msg});
+        res.render('products',   {products, user:req.session.user});
     } catch (error) {
         console.error('Error fetching products:', error.message);
         res.status(500).send('Internal Server Error');

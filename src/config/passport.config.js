@@ -46,7 +46,7 @@ const inicializePassport = () => {
                     age,
                     password: createHash(password),
                     role: role,
-                    cart: newCart._id
+                    cart: newCart._id,
                 }
 
                 const result = await userModel.create(newUser);

@@ -15,7 +15,7 @@ import {CartRouter} from './routes/carts.router.js'
 import { UserRouter } from './routes/users.router.js';
 import { mockingRoutes } from './routes/mock.router.js';
 import { addLogger } from './utils/logger.js';
-import { LoggerRouter } from './routes/logger.router.js';
+
 
 
 
@@ -34,7 +34,7 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 app.use("/", express.static(__dirname + "/public"));
 app.use(addLogger)
-app.use(LoggerRouter)
+
 
 app.use(session({
     store: new MongoStore({
@@ -46,16 +46,19 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use("/", viewsRouter);
-app.use("/api/sessions", sessionRouter);
-app.use("/api/products", ProductRouter);
-app.use("/api/carts", CartRouter);
-app.use("/api/users", UserRouter);
-app.use("/", mockingRoutes)
-
 inicializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+app.use("/", viewsRouter);
+app.use("/api/carts", CartRouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/users", UserRouter);
+app.use("/api/sessions", sessionRouter);
+
+
+app.use("/", mockingRoutes)
 
 
 
