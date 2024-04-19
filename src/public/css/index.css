@@ -1,10 +1,48 @@
-.container {
+body{
+    margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        height: 100vh;
+    
+}
+
+.container-products {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
+    background-color: f0f0f0;
 }
-.container2 {
+
+
+#btn-profile button,
+#btn-logout button {
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding:5px 5px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Borde redondeado */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar como bloque en línea */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 5px; /* Margen exterior */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+#btn-profile button:hover {
+    background-color: green;
+}
+
+#btn-logout button:hover {
+    background-color: red; /* Cambiar el color de fondo al pasar por encima */
+}
+
+
+.container-resetpassword {
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -52,4 +90,157 @@ h2{
 
 #pagination{
     text-align: center;
+}
+
+#logout{
+    display: flex;
+    justify-content: end;
+    justify-self: start;
+   
+}
+#contenedor-principal-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#contenedor-login {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#contenedor-register {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#loginTitle {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#loginForm {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+#loginBtn {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+}
+
+#loginBtn:hover {
+    background-color: #45a049;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="submit"] {
+    width:100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+input[type="submit"] {
+
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#loginInfo {
+    text-align: center;
+}
+
+#loginInfo p {
+    margin-bottom: 10px;
+}
+
+#loginInfo a {
+    color: #4caf50;
+    text-decoration: none;
+}
+
+#loginInfo a:hover {
+    text-decoration: underline;
+}
+
+/*register*/
+#contenedor-principal-register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#contenedor-register {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#contenedor-register p{
+    text-align: center;
+}
+#contenedor-register h1{
+    text-align: center;
+}
+
+input[name="first_name"],
+input[name="last_name"],
+input[name="email"],
+input[name="age"],
+input[name="password"] {
+    width: calc(100% - 10px); /* Ancho del 100% menos el padding */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* El tamaño incluye el borde y el relleno */
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: block; /* Convertir el botón en un bloque */
+    margin: 0 auto; /* Centrar horizontalmente */
 }

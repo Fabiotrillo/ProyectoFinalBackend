@@ -1,6 +1,7 @@
 import express from 'express';
 import  UserController  from '../controllers/UserController.js';
 import { checkRole } from '../midlewares/auth.js';
+import { upload } from '../utils.js';
 
 const router = express.Router();
 
@@ -13,6 +14,10 @@ router.post('/', UserController.createUser);
 router.delete('/:userId', checkRole(['admin']), UserController.deleteUser);
 
 router.put('/:userId', checkRole(['admin']), UserController.updateUser);
+
+router.post('/documents', upload.array('documents'), UserController.uploadDocuments);
+
+router.post('/profiles-image', upload.array('profileImage'), UserController.uploadProfileImage);
 
 export default router;
 

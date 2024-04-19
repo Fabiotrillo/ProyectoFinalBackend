@@ -16,7 +16,6 @@ class ProductController {
       const products = result;
       req.logger.info("Obteniendo productos con éxito");
       res.status(200).json({
-        status: "success",
         products: products,
       });
     } catch (error) {
@@ -54,7 +53,6 @@ class ProductController {
 
     const owner = req.user && req.user.email ? req.user.email : "admin";
    
-    console.log(owner)
     const {
       title,
       description,
@@ -62,7 +60,7 @@ class ProductController {
       price,
       stock,
       category,
-      thumbnail,
+      image,
     } = req.body; //json con el producto
     if (
       !title ||
@@ -84,7 +82,7 @@ class ProductController {
       price,
       stock,
       category,
-      thumbnail,
+      image,
       owner
     };
     try {
@@ -144,12 +142,12 @@ class ProductController {
         return res.status(404).json({ status: "error", message: "Producto no encontrado" });
       }
 
-      if (req.user.role !== "admin" && product.owner !== req.user.email) {
+     /* if (req.user.role !== "admin" && product.owner !== req.user.email) {
         return res.status(403).send({
             status: "error",
             message: `No tiene permisos para eliminar este producto`,
         });
-    }
+    }*/
   
     await ProductService.deleteProductByID(product);
     

@@ -77,6 +77,13 @@ router.get('/profile', privateAccess, (req, res) => {
     res.render('profile', { user: req.session.user });
 });
 
+router.get('/upload-documents', privateAccess,(req, res) => {
+    res.render('uploadDocuments');
+});
+
+  router.get('/create-product', (req, res) => {
+    res.render('createProduct');
+});
 
 
 

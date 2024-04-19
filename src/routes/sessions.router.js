@@ -41,10 +41,14 @@ async (req,res) =>{
         })
     }
     req.session.user = {
+        id : req.user._id,
+        first_name: req.user.first_name,
         FullName:`${req.user.first_name} ${req.user.last_name}`,
+        last_name:req.user.last_name,
         age: req.user.age,
         email: req.user.email,
-        role:req.user.role
+        role:req.user.role,
+
     }
     const productsResponse = await manager.getProducts();
     req.session.products = productsResponse.msg;

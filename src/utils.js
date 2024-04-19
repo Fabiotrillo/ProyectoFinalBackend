@@ -3,6 +3,7 @@ import { dirname } from "path";
 import bcrypt from "bcrypt";
 import  jwt from "jsonwebtoken";
 import { config } from "./config/config.js";
+import multer from "multer";
 
 
 export const createHash = (password)=> bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -23,6 +24,25 @@ export const verifyEmailToken = (token)=>{
 
     }
 };
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      let destinationFolder = '';
+      if (req.baseUrl.includes('products')) {
+        destinationFolder = 'products';
+      } else if (req.baseUrl.includes('users')) {
+        destinationFolder = 'profiles';
+      } else {
+        destinationFolder = 'documents';
+      }
+      cb(null,__dirname+ `/../uploads/${destinationFolder}`);
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    }
+  });
+  
+  export const upload = multer({ storage: storage });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

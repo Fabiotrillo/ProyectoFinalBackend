@@ -33,8 +33,23 @@ const schema = new mongoose.Schema({
         default: 'user',
     },
     password: String,
-    cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' }
+    cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' },
 
+    hasUploadedDocuments: {
+        type: Boolean,
+        default: false 
+      },
+
+    documents: [
+        {
+            name: String,
+            reference: String
+        }
+    ],
+    profileImage: {
+        type:mongoose.Schema.Types.Mixed // Aquí puedes almacenar la ruta de la imagen de perfil
+      },
+    
 })
 
 const userModel =  mongoose.model(collection,schema);

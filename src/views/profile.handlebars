@@ -1,9 +1,16 @@
 <div>
-     <h1>Bienvenido, {{user.first_name}}</h1>
+    <h1>Bienvenido, {{user.first_name}}</h1>
     <p>Mi perfil</p>
-    <p>Nombre completo: {{user.full_name}}</p>
+    <p>Nombre completo: {{user.FullName}}</p>
     <p>Email: {{user.email}}</p>
     <p>Edad: {{user.age}}</p>
-    
-    <a href="/api/sessions/logout"><button>Cerrar session</button></a>
+    <p>Imagen de perfil:</p>
+
+    <form action="/api/users/profiles-image" method="POST" enctype="multipart/form-data">
+        <label for="profileImage">Selecciona una imagen de perfil:</label>
+        <input type="file" id="profileImage" name="profileImage" accept="image/*">
+        <button type="submit">Actualizar imagen de perfil</button>
+    </form>
+
+    <a href="/api/sessions/logout"><button>Cerrar sesión</button></a>
 </div>
