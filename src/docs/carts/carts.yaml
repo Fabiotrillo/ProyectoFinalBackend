@@ -1,0 +1,255 @@
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito de compra según su ID {cid}
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito se obtuvo de manera correcta
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/products:
+    get:
+      summary: Obtener los productos de un carrito de compra según su ID {cid}
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito se obtuvo de manera correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CartItem"
+        "500":
+          description: Error interno del servidor
+
+
+  /api/carts/:
+    get:
+      summary: Obtener todos los carritos de compra
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos se obtuvieron de forma correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error interno del servidor
+
+    post:
+      summary: Crear un carrito 
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El carrito se creó correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cid es el id del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto a cargar en el carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: '#/components/schemas/Cart'
+        "500":
+          description: Error interno del servidor
+
+/api/carts/{cid}/purchase:
+  post:
+    summary: Comprar un carrito, devolviendo un ticket de compra y los productos sin stock
+    tags:
+      - Carts
+    parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Compra realizada con éxito
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ticket:
+                  type: object
+                  description: Ticket de compra
+                  properties:
+                    # Define las propiedades del ticket aquí, por ejemplo:
+                    id:
+                      type: string
+                      description: ID del ticket de compra
+                    total:
+                      type: number
+                      description: Total de la compra
+                    # Agrega más propiedades según sea necesario
+                products_without_stock:
+                  type: array
+                  description: Lista de productos sin stock
+                  items:
+                    $ref: "products.yaml#/components/schemas/Product"
+      "500":
+        description: Error interno del servidor
+
+
+
+
+/api/carts/{cid}:
+  delete:
+    summary: Eliminar un carrito de compra según su ID {cid}
+    tags:
+      - Carts
+    parameters:
+      - name: cid
+        in: path
+        required: true
+        description: ID del carrito
+        schema:
+          type: string
+    responses:
+      "200":
+        description: El carrito se eliminó de manera correcta
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                message:
+                  type: string
+                  example: Carrito eliminado correctamente
+      "500":
+        description: Error interno del servidor
+
+/api/carts/{cid}/product/{pid}:
+  delete:
+    summary: Eliminar un producto del carrito
+    tags:
+      - Carts
+    parameters:
+      - name: cid
+        in: path
+        required: true
+        description: cid es el id del carrito
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: pid es el id del producto a cargar en el carrito
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Producto eliminado del carrito
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                payload:
+                  $ref: '#/components/schemas/Cart'
+      "500":
+        description: Error interno del servidor
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del carrito
+        products:
+          type: array
+          description: Lista de productos en el carrito
+          items:
+            $ref: '#/components/schemas/CartItem'
+      example:
+        _id: "60986f41b9836228a1b60c3f"
+        products:
+          - product: "60986f41b9836228a1b60c3a"
+            quantity: 2
+          - product: "60986f41b9836228a1b60c3b"
+            quantity: 1
+
+    CartItem:
+      type: object
+      properties:
+        product:
+          type: string
+          description: ID del producto agregado al carrito
+        quantity:
+          type: number
+          description: Cantidad de producto agregado al carrito

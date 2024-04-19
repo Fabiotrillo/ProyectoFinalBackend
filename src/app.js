@@ -61,7 +61,7 @@ app.use("/api/sessions", sessionRouter);
 app.use("/", mockingRoutes)
 
 
-
+export {app}
 
 
 

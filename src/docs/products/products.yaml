@@ -1,0 +1,229 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Los productos se obtuvieron de forma correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor
+    post:
+      summary: Crear Producto
+      tags:
+      - Products
+      requestBody:
+        requirequired: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProducts"
+      responses:
+        "200":
+          description: El producto se creo en forma correcta
+          content:
+            application/json:
+              schema:
+                type: objet
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: '#/components/schemas/Product'
+        "500":
+          description: Error interno del servidor            
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto según su ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El producto se obtuvo de manera correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor
+    
+    put:
+      summary: Modificar un producto
+      tags:
+      - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      requestBody:
+        requirequired: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProducts"
+      responses:
+        "200":
+          description: El producto se modifico en forma correcta
+          content:
+            application/json:
+              schema:
+                type: objet
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    $ref: '#/components/schemas/Product'
+        "500":
+          description: Error interno del servidor
+
+    delete:
+      summary: Eliminar un producto según su ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El producto se elimino de manera correcta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor
+
+  /api/products/mock/mockingproducts/:
+    get:
+      summary: Obtener productos de prueba
+      tags:
+        - Mock
+      parameters:
+        - name: cant
+          in: query
+          description: Cantidad de productos a generar (opcional), 100 por default
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Éxito. Devuelve una lista de productos generados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        '500':
+          description: Error interno del servidor
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del producto
+        title:
+          type: string
+          description: Titulo del Producto
+        description:
+          type: string
+          description: Nombre del Producto
+        code:
+          type: number
+          description: Código del producto
+        status:
+          type: boolean
+          description: Indica si es un producto activo o no
+        stock:
+          type: number
+          description: Stock del producto
+        category:
+          type: string
+          description: Categoría o rubro del producto
+        owner:
+          type: string
+          description: Indica quién creó el producto
+        thumbnails:
+          type: array
+          description: Array de imágenes en miniatura del producto
+      example:
+        _id: ObjectId("gsa98273skjhgda8912")
+        description: Galletitas Terrabussi surtidas x 500 grs.
+        code: 15847
+        status: true
+        stock: 12
+        category: Galletitas
+        owner: pepe@gmail.com
+
+  requestBodies:
+    UpdateProducts:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del Producto
+        description:
+          type: string
+          description: Descripcion del Producto
+        code:
+          type: number
+          description: codigo del Producto
+        price:
+          type: number
+          description: Precio del Producto
+        status:
+          type: boolean
+          description: Estado del Producto
+        stock:
+          type: number
+          description: Stock del Producto
+        category:
+          type: string
+          description: Categoria o Rubro del Producto
+        owner:
+          type: string
+          description: Indica quién creó el producto
+        thumbnails:
+          type: array
+          description: Array de imágenes en miniatura del producto
+      example:
+        title: Parlante bluetooth
+        description: parlante ultrasonido
+        code: 12458
+        price: 300
+        status: true
+        stock: 40
+        category: Electronica
+        owner: juanpepe@gmail.com
