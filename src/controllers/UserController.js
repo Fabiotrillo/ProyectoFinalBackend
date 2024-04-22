@@ -226,11 +226,11 @@ class UserController {
   };
 
   // Método para verificar si el usuario ha cargado todos los documentos requeridos
-  static hasAllRequiredDocuments(documents) {
-    const requiredDocuments = ['Identificación', 'Comprobante de domicilio', 'Comprobante de estado de cuenta'];
-    const uploadedDocuments = documents.map(doc => doc.name);
-    return requiredDocuments.every(doc => uploadedDocuments.includes(doc));
-  }
+  static hasAllRequiredDocuments = (documents) => {
+    return documents.some(doc => doc.name === 'identification') &&
+           documents.some(doc => doc.name === 'proofOfAddress') &&
+           documents.some(doc => doc.name === 'AccountState');
+};
 
   static deleteUser = async (req, res) => {
     const userId = req.params.userId;

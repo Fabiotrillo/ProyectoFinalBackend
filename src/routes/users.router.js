@@ -15,7 +15,7 @@ router.delete('/:userId', checkRole(['admin']), UserController.deleteUser);
 
 router.put('/:userId', checkRole(['admin']), UserController.updateUser);
 
-router.post('/documents', upload.array('documents'), UserController.uploadDocuments);
+router.post('/documents', upload.any('documents'), UserController.uploadDocuments);
 
 router.post('/profiles-image', upload.array('profileImage'), UserController.uploadProfileImage);
 

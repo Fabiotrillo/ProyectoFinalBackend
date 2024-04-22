@@ -30,12 +30,12 @@ const storage = multer.diskStorage({
       let destinationFolder = '';
       if (req.baseUrl.includes('products')) {
         destinationFolder = 'products';
-      } else if (req.baseUrl.includes('users')) {
+      } else if (file.fieldname === 'profileImage') {
         destinationFolder = 'profiles';
       } else {
         destinationFolder = 'documents';
       }
-      cb(null,__dirname+ `/../uploads/${destinationFolder}`);
+      cb(null,__dirname+ `/uploads/${destinationFolder}`);
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname);

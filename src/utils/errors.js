@@ -28,4 +28,3 @@ export const customizeError = (errorKey, additionalInfo = "", errorDictionary) =
     const errorMessage = errorDictionary[errorKey] || "Error desconocido.";
     return `${errorMessage} ${additionalInfo}`;
 };
-
