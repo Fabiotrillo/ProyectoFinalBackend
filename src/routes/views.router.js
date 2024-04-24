@@ -34,6 +34,7 @@ router.get('/products', privateAccess, async (req, res) => {
         const productsResponse = await manager.getProducts(limit, page, sort, category, availability, query);
         const products = productsResponse.msg;
 
+
         
 
         res.render('products',   {products, user:req.session.user});
@@ -43,11 +44,26 @@ router.get('/products', privateAccess, async (req, res) => {
     }
 });
 
-router.get("/carts", async (req,res)=>{
-    const carts = await  cartmanager.getCartByID();
-    res.render("carts")
-})
+router.get("/carts", privateAccess, async (req, res) => {
+    try {
+        const cartId = req.user.cart;
+        
+        // Verificar si el usuario tiene un carrito asignado
+        if (!cartId) {
+            return res.render("carts", { cart: null, products: [] });
+        }
+       
 
+        // Obtener el carrito desde la base de datos utilizando el ID
+        const cart = await cartmanager.getCartByID(cartId);
+        
+        // Renderizar la vista "carts" pasando el carrito como contexto de datos
+        res.render("carts", { cart, products:cart.products});
+    } catch (error) {
+        console.error('Error fetching cart:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 router.get("/register", publicAccess,  (req,res)=>{

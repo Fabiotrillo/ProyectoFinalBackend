@@ -9,7 +9,7 @@ export class CreateUsersDto{
         this.Password = user.password;
         this.id= user._id;
         this.profileImage= user.profileImage;
-        
+        this.cart=user.cart;
     }
 }
 
@@ -21,5 +21,6 @@ export class GetUserDto{
         this.age= userDao.age;
         this.role = userDao.role;
         this.profileImage= userDao.profileImage;
+        this.cart=userDao.cart;
         }
 }

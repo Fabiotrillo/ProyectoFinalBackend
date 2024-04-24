@@ -48,7 +48,7 @@ async (req,res) =>{
         age: req.user.age,
         email: req.user.email,
         role:req.user.role,
-
+        cart:req.user.cart,
     }
     const productsResponse = await manager.getProducts();
     req.session.products = productsResponse.msg;
@@ -164,7 +164,6 @@ router.get('/current', (req, res) => {
                 msg: "No hay usuario activo",
               })
         }
-       
     const userDto = new GetUserDto(req.session.user);
       res.send({ status: 'success', payload: userDto });
     } else {

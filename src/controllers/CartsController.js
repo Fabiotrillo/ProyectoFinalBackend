@@ -61,7 +61,7 @@ class CartsController {
   static addProductToCart = async (req, res) => {
     const cid = req.params.cid;
     const pid = req.params.pid;
-
+  
     if (!cid || !pid) {
       return res.status(400).json({ error: "Datos incompletos" });
     }

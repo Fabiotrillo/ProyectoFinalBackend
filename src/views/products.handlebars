@@ -15,11 +15,11 @@
         <p class="product-price">Precio: ${{this.price}}</p>
         <p class="product-stock">Stock: {{this.stock}}</p>
 
-        <form action="/api/carts" method="post">
-            <input type="hidden" name="products" value="{{this._id}}">
-            <input type="hidden" name="quantity" value= 1>
-            <input type="submit" value="Agregar al Carrito">
-        </form>
+       <form action="/api/carts/{{user.cart}}/products/{{this._id}}" method="post">
+    <input type="hidden" name="quantity" value="1">
+    <input type="submit" value="Agregar al Carrito">
+</form>
+</form>
 
     
     </div>
