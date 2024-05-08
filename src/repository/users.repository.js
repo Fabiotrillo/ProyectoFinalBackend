@@ -1,4 +1,4 @@
-import { CreateUsersDto, GetUserDto } from "../dao/dto/users.dto.js";
+
 
 
 class UserRepository {
@@ -21,6 +21,16 @@ class UserRepository {
           throw new Error(`Error al obtener el usuario: ${error.message}`);
       }
   }
+
+  async getUserByEmail(email) {
+    try {
+        const user = await this.dao.getUserByEmail(email);
+        return user;
+    } catch (error) {
+        throw new Error(`Error al obtener el usuario por correo electrónico: ${error.message}`);
+    }
+}
+
   async createUser(userData) {
     try {
       return await this.dao.createUser(userData);
@@ -39,11 +49,14 @@ class UserRepository {
 
   async deleteUser(userId) {
     try {
-      return await this.dao.deleteUser(userId);
+      const deleteUser =await this.dao.deleteUser(userId);
+      return deleteUser
     } catch (error) {
       throw new Error(`Error al eliminar el usuario: ${error.message}`);
     }
   }
+
+
 }
 
 export default UserRepository;

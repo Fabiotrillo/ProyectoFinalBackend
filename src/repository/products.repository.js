@@ -21,6 +21,8 @@ class ProductRepository {
         throw new Error(`Error: ${error.message}`);
       }
     }
+
+    
   
     async createProduct (productData) {
       try {

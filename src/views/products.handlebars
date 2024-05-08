@@ -1,8 +1,10 @@
 
 <h1>Bienvenido, {{user.FullName}}</h1>
 <div id="logout">
-        <a href="/profile" id="btn-profile"><button>Profile</button></a>
+         <a href="/carts"><button id="cartIcon"><i class="bi bi-cart"></i></button></a>
+         <a href="/profile" id="btn-profile"><button>Profile</button></a>
          <a href="/api/sessions/logout" id="btn-logout"><button>LogOut</button></a>
+        
 </div>
 <h2>Nuestros productos</h2>
 <div class="container-products">
@@ -15,14 +17,12 @@
         <p class="product-price">Precio: ${{this.price}}</p>
         <p class="product-stock">Stock: {{this.stock}}</p>
 
-       <form action="/api/carts/{{user.cart}}/products/{{this._id}}" method="post">
-    <input type="hidden" name="quantity" value="1">
+       <form action="/api/carts{{user.cart}}/products/{{this._id}}" method="post">
+       <span>Cantidad:</span>
+       <input class="quantity" type="number" name="quantity" value="1" min="1" max="{{stock}}">
     <input type="submit" value="Agregar al Carrito">
 </form>
-</form>
-
-    
-    </div>
+</div>
     {{/each}} 
 </div>
 

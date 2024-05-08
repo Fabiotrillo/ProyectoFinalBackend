@@ -1,0 +1,52 @@
+.cart-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.cart-li {
+    list-style: none;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.cart-product {
+    display: flex;
+    align-items: center;
+}
+
+.cart-product-info {
+    display: flex;
+    gap: 20px;
+    padding-left: 10px; /* Espacio entre la imagen y la información */
+}
+
+.cart-product-image {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+.cart-delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.cart-delete-btn:hover {
+    background-color: #c82333;
+}
+
+#cart-total{
+    text-align: center;
+    border: 1px solid #ccc;
+    width: 50%; /* Por ejemplo, puedes ajustar el ancho según tus necesidades */
+    margin: 0 auto; /* Esto centrará el contenedor en la página */
+    padding: 10px; }
+

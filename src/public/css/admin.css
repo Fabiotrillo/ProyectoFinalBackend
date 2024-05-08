@@ -1,0 +1,48 @@
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-item h3 {
+    margin-top: 0;
+}
+
+.user-item p {
+    margin-bottom: 5px;
+}
+
+.user-item form {
+    margin-top: 10px;
+}
+
+.user-item form button {
+    margin-top: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-item form button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el botón de eliminar usuario */
+.delete-button {
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}

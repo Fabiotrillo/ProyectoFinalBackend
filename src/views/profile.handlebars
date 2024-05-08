@@ -4,7 +4,7 @@
     <p>Nombre completo: {{user.FullName}}</p>
     <p>Email: {{user.email}}</p>
     <p>Edad: {{user.age}}</p>
-    <p>Imagen de perfil:</p>
+    <p>Imagen de perfil: <img src="{{user.profileImage}}" alt="Imagen de perfil"></p>
 
     <form action="/api/users/profiles-image" method="POST" enctype="multipart/form-data">
         <label for="profileImage">Selecciona una imagen de perfil:</label>

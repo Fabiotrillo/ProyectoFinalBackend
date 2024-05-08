@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductManager from "../dao/managersDB/ProductManager.js";
+import { UserService } from "../repository/index.js";
 import CartManager from "../dao/managersDB/CartManager.js";
-import { verifyEmailToken } from "../utils.js";
 import { verifyEmailTokenMW } from "../midlewares/auth.js";
 
 
@@ -52,13 +52,21 @@ router.get("/carts", privateAccess, async (req, res) => {
         if (!cartId) {
             return res.render("carts", { cart: null, products: [] });
         }
-       
+        
 
         // Obtener el carrito desde la base de datos utilizando el ID
         const cart = await cartmanager.getCartByID(cartId);
-        
+         let total = 0;
+        if (cart.products.length > 0) {
+            // Calcular el nuevo total del carrito después de eliminar el producto
+            cart.products.forEach(item => {
+                if (item.product && item.product.price && !isNaN(item.quantity)) {
+                    total += item.product.price * item.quantity;
+                }
+            });
+        }
         // Renderizar la vista "carts" pasando el carrito como contexto de datos
-        res.render("carts", { cart, products:cart.products});
+        res.render("carts", { cart, total });
     } catch (error) {
         console.error('Error fetching cart:', error.message);
         res.status(500).send('Internal Server Error');
@@ -69,6 +77,7 @@ router.get("/carts", privateAccess, async (req, res) => {
 router.get("/register", publicAccess,  (req,res)=>{
     res.render("register");
 })
+
 
 
 router.get("/login", publicAccess, (req,res)=>{
@@ -90,7 +99,12 @@ router.get('/resetpassword',verifyEmailTokenMW(), (req,res)=>{
 })
 
 router.get('/profile', privateAccess, (req, res) => {
-    res.render('profile', { user: req.session.user });
+    res.render('profile', { 
+        user: { 
+            ...req.session.user, // Copia todas las propiedades del usuario existente
+            profileImage: req.session.user.profileImage // Agrega la propiedad profileImage al usuario
+        } 
+    });
 });
 
 router.get('/upload-documents', privateAccess,(req, res) => {
@@ -98,8 +112,18 @@ router.get('/upload-documents', privateAccess,(req, res) => {
 });
 
   router.get('/create-product', (req, res) => {
-    res.render('createProduct');
+    res.render('createProducts');
 });
+
+router.get('/admin', async (req,res)=>{
+    const users = await UserService.getUsers();
+    if(!users){
+        return next(new Error("No se pudo obtener los usuarios"));
+    }
+    const mainUser = req.session.user
+
+        res.render("admin", {mainUser: mainUser, users: users} );
+})
 
 
 

@@ -3,6 +3,8 @@ import { CartService, ProductService } from "../repository/index.js";
 import  {ticketsModel}  from "../dao/db/models/tickets.model.js";
 import { v4 as uuidv4 } from 'uuid';
 import { cartErrorDictionary, customizeError } from "../utils/errors.js";
+import {io} from "../app.js";
+import { sendPurchaseConfirmation } from "../services/mailingService.js";
 
 
 class CartsController {
@@ -59,80 +61,88 @@ class CartsController {
   };
 
   static addProductToCart = async (req, res) => {
-    const cid = req.params.cid;
+    const cid = req.user ? req.user.cart : null;
     const pid = req.params.pid;
-  
-    if (!cid || !pid) {
-      return res.status(400).json({ error: "Datos incompletos" });
+    const quantity = req.body.quantity;
+ 
+    if (!cid || !pid || !quantity) {
+        return res.status(400).json({ error: "Datos incompletos" });
     }
 
     try {
-      const result = await CartService.addProductToCart(cid, pid);
-      req.logger.info("Producto agregado al carrito con éxito");
-      res.status(200).json({
-        status: result.status,
-        msg: result
-      });
+        const result = await CartService.addProductToCart(cid, pid, quantity);
+
+        
+        req.logger.info("Producto agregado al carrito con éxito");
+        res.status(200).json({
+            status: result.status,
+            msg: result
+        });
     } catch (error) {
-      const formattedError = customizeError('ADD_PRODUCT_TO_CART', error.message, cartErrorDictionary);
-      req.logger.error(`Error interno del servidor: ${formattedError}`);
-      res.status(500).json({ error: "Error interno del servidor" });
+        const formattedError = customizeError('ADD_PRODUCT_TO_CART', error.message, cartErrorDictionary);
+        req.logger.error(`Error interno del servidor: ${formattedError}`);
+        res.status(500).json({ error: "Error interno del servidor" });
     }
-  };
+};
 
-  static finalizePurchase = async (req, res) => {
-    try {
-      const cartId = req.params.cid;
-      const cart = await CartService.getCartByID(cartId);
+static finalizePurchase = async (req, res) => {
+  try {
+          const userEmail = req.user.email
+          const cartId = req.user.cart;
+          const cart = await CartService.getCartByID(cartId);
 
-      if (cart) {
-        if (!cart.products.length) {
-          req.logger.warning("Es necesario agregar productos antes de realizar la compra");
-          return res.send("Es necesario agregar productos antes de realizar la compra");
-        }
-
-        const ticketProducts = [];
-        const rejectedProducts = [];
-
-        for (let i = 0; i < cart.products.length; i++) {
-          const cartProduct = cart.products[i];
-          const productDB = await ProductService.getProductByID(cartProduct.product._id);
-
-          if (!productDB) {
-            const notFoundProductError = customizeError('PRODUCT_NOT_FOUND', 'No se encontró el producto', cartErrorDictionary);
-            req.logger.error(notFoundProductError);
-            return res.status(404).json({
-              message: 'No se encontró el producto',
-            });
+          // Si no hay un carro
+          if (!cart) {
+              throw new Error('No se encontró el carro de compras');
           }
 
-          if (cartProduct.quantity <= productDB.stock) {
-            ticketProducts.push(cartProduct);
-          } else {
-            rejectedProducts.push(cartProduct);
+          if (!cart.products.length) {
+              req.logger.warning("Es necesario agregar productos antes de realizar la compra");
+              return res.send("Es necesario agregar productos antes de realizar la compra");
           }
-        }
 
-        const newTicket = {
-          code: uuidv4(),
-          purchase_datetime: new Date(),
-          amount: 500,
-          purchaser: 'email@email.com'
-        };
+          const ticketProducts = [];
+          const rejectedProducts = [];
 
-        const ticketCreated = await ticketsModel.create(newTicket);
-        req.logger.info("Compra finalizada con éxito");
-        res.send(ticketCreated);
-      } else {
-        req.logger.warn('El carrito no existe');
-        res.send("El carrito no existe");
-      }
-    } catch (error) {
-      const formattedError = customizeError('FINALIZE_PURCHASE', error.message, cartErrorDictionary);
-      req.logger.error(`Error interno del servidor: ${formattedError}`);
-      res.status(500).json({ error: "Error interno del servidor" });
-    }
-  };
+          for (let i = 0; i < cart.products.length; i++) {
+              const cartProduct = cart.products[i];
+              const productDB = await ProductService.getProductByID(cartProduct.product._id);
+
+              if (!productDB) {
+                  const notFoundProductError = customizeError('PRODUCT_NOT_FOUND', 'No se encontró el producto', cartErrorDictionary);
+                  req.logger.error(notFoundProductError);
+                  return res.status(404).json({
+                      message: 'No se encontró el producto',
+                  });
+              }
+
+              if (cartProduct.quantity <= productDB.stock) {
+                  ticketProducts.push(cartProduct);
+              } else {
+                  rejectedProducts.push(cartProduct);
+              }
+          }
+
+          const newTicket = {
+              code: uuidv4(),
+              purchase_datetime: new Date(),
+              amount: 500,
+              purchaser: userEmail,
+          };
+
+          await sendPurchaseConfirmation(userEmail, newTicket);
+
+        const updatedCart = await CartService.updateCart(cartId, { products: [] });
+       
+
+          const ticketCreated = await ticketsModel.create(newTicket);
+
+          req.logger.info("Compra finalizada con éxito");
+          res.send(ticketCreated);
+  } catch (error) {
+      console.log(error)
+  }
+};
 
   static removeProductFromCart = async (req, res) => {
     const cid = req.params.cid;
@@ -145,6 +155,7 @@ class CartsController {
     try {
       const response = await CartService.removeProductFromCart(cid, pid);
       req.logger.info("Producto eliminado del carrito con éxito");
+      io.emit('productRemoved', {cid,pid });
       res.status(200).json(response);
     } catch (error) {
       const formattedError = customizeError('REMOVE_PRODUCT_FROM_CART', error.message, cartErrorDictionary);

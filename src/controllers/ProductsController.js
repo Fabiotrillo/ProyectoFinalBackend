@@ -1,29 +1,22 @@
-import { ProductService, UserService } from "../repository/index.js";
+import { ProductService } from "../repository/index.js";
 import { productErrorDictionary, customizeError } from "../utils/errors.js";
+import { UserService } from "../repository/index.js";
+import { sendProductDeletedNotification } from "../services/mailingService.js";
 
 class ProductController {
   static getProducts = async (req, res) => {
     try {
-      const { limit, page, sort, category, availability, query } = req.query;
-      const result = await ProductService.getProducts(
-        limit,
-        page,
-        sort,
-        category,
-        availability,
-        query
-      );
-      const products = result;
-      req.logger.info("Obteniendo productos con éxito");
-      res.status(200).json({
-        products: products,
-      });
+        const result = await ProductService.getProducts(req.query);
+        req.logger.info("Obteniendo productos con éxito");
+        res.status(200).json({
+            products: result,
+        });
     } catch (error) {
-      const formattedError = customizeError('FETCHING_PRODUCTS', error.message, productErrorDictionary);
-      req.logger.error(`Error en lectura de archivos: ${formattedError}`);
-      res.status(500).json({ error: "Error interno del servidor" });
+        const formattedError = customizeError('FETCHING_PRODUCTS', error.message, productErrorDictionary);
+        req.logger.error(`Error en lectura de archivos: ${formattedError}`);
+        res.status(500).json({ error: "Error interno del servidor" });
     }
-  };
+};
 
   static getProductByID = async (req, res) => {
     const pid = req.params.pid;
@@ -62,6 +55,7 @@ class ProductController {
       category,
       image,
     } = req.body; //json con el producto
+
     if (
       !title ||
       !description ||
@@ -73,7 +67,14 @@ class ProductController {
       return res.status(400).send("datos incompletos")
       };
 
-      
+      const filename = req.file.filename;
+
+    if (!filename) {
+        return res.status(400).send("No se pudo cargar la imagen");
+    }
+
+    // Construye la URL completa para la imagen
+    const thumbnail = `http://localhost:8080/uploads/products/${filename}`;
 
     const product = {
       title,
@@ -82,7 +83,7 @@ class ProductController {
       price,
       stock,
       category,
-      image,
+      image:thumbnail,
       owner
     };
     try {
@@ -140,26 +141,26 @@ class ProductController {
       
       if (!product) {
         return res.status(404).json({ status: "error", message: "Producto no encontrado" });
-      }
-
-     /* if (req.user.role !== "admin" && product.owner !== req.user.email) {
-        return res.status(403).send({
-            status: "error",
-            message: `No tiene permisos para eliminar este producto`,
-        });
-    }*/
-  
-    await ProductService.deleteProductByID(product);
+      } 
+    const ownerEmail = product.owner;
     
-    res.status(200).json({
+    const ownerId = await UserService.getUserByEmail({email:ownerEmail})
+    
+    
+    if (ownerId.role === "premium") {
+      // Envío de correo electrónico al propietario del producto
+      await sendProductDeletedNotification(ownerId.email, product.title, product._id);
+    }
+
+    await ProductService.deleteProductByID(product);
+   
+    res.status(200).send({
       status: "success",
       msg: `Producto Eliminado con el id: ${pid}`
     })
 
     } catch (error) {
-      const formattedError = customizeError('DELETE_PRODUCT', error.message, productErrorDictionary);
-      req.logger.error(`Error al eliminar producto: ${formattedError}`);
-      res.status(500).json({ error: "Error interno del servidor" });
+      console.log(error)
     }
 };
 }

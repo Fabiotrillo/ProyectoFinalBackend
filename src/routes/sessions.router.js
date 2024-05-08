@@ -12,11 +12,12 @@ const router = Router();
 const manager = new ProductManager();
 
 //register user
-router.post("/register",passport.authenticate("register", {failureRedirect:"/register/failregister"}),
-
-async (req,res) => {
-
-    res.send({status:"success", message:"User registrado"})
+router.post("/register",passport.authenticate("register", {failureRedirect:"/register/failregister"}), async (req,res) => {
+    res.send({
+        status: "success",
+        message: "Usuario registrado exitosamente",
+        
+    });
 })
 
 router.get("/failregister", async (req,res)=>{
@@ -41,7 +42,6 @@ async (req,res) =>{
         })
     }
     req.session.user = {
-        id : req.user._id,
         first_name: req.user.first_name,
         FullName:`${req.user.first_name} ${req.user.last_name}`,
         last_name:req.user.last_name,
@@ -49,12 +49,17 @@ async (req,res) =>{
         email: req.user.email,
         role:req.user.role,
         cart:req.user.cart,
+        last_connection: new Date()
     }
+    const userId = req.user._id
+        await userModel.findByIdAndUpdate(userId, { last_connection: new Date() })
+    console.log(req.session.user)
     const productsResponse = await manager.getProducts();
     req.session.products = productsResponse.msg;
+   
 
     res.send({
-        status:"success", payload:req.user
+        status:"success", payload:req.session.user
     })
 }
 
@@ -78,16 +83,23 @@ async(req,res)=>{
 
 
 //logout user
-router.get('/logout',(req,res)=>{
-    req.session.destroy(err=>{
-        if(err){
-            return res.status(500).send({
-                status:"Error",
-                message:"No se pudo cerrar sesion."
-            })
-        }
-        res.redirect('/login')
-    })
+router.get('/logout', async (req, res) => {
+    try {
+        const userId = req.user._id;
+        await userModel.findByIdAndUpdate(userId, { last_connection: new Date() })
+
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).send({
+                    status: "Error",
+                    message: "No se pudo cerrar sesion."
+                })
+            }
+            res.redirect('/login')
+        })
+   } catch (error) {
+        console.log(error)
+   }
 })
 
 //reset password
@@ -164,7 +176,7 @@ router.get('/current', (req, res) => {
                 msg: "No hay usuario activo",
               })
         }
-    const userDto = new GetUserDto(req.session.user);
+    const userDto = new GetUserDto(user);
       res.send({ status: 'success', payload: userDto });
     } else {
       res.status(401).send({ status: 'error', message: 'Usuario no autenticado' });

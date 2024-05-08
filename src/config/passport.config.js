@@ -38,6 +38,7 @@ const inicializePassport = () => {
 
                 // Crear un nuevo carrito para el usuario
                 const newCart = await manager.createCarts([], 0);
+            
 
                 const newUser = {
                     first_name,
@@ -51,8 +52,8 @@ const inicializePassport = () => {
 
                 const result = await userModel.create(newUser);
                
-
-                return done(null, result);
+                console.log(result)
+                return done (null, result);
                 
             } catch (error) {
                 return done(error)

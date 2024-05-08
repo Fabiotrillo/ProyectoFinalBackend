@@ -1,14 +1,37 @@
-<h1>Detalles del carrito</h1>
+<h1>Detalles del Carrito</h1>
 {{#if cart}}
-    <ul>
-        {{#each cart.products}}
-            <li>
-                <p>Producto: {{ this.product.title }}</p>
-                <p>Cantidad: {{ this.quantity }}</p>
-                <p>Descripción: {{ this.product.description }}</p>
-            </li>
-        {{/each}}
-    </ul>
+    <div class="cart-container">
+        <ul class="cart-ul">
+            {{#each cart.products}}
+                <li class="cart-li" id="product-{{ this.product._id }}">
+                    <div class="cart-product">
+                        <div class="cart-product-info">
+                            <img src="{{ this.product.image }}" alt="{{ this.product.title }}" class="cart-product-image">
+                            <p class="cart-product-title">{{ this.product.title }}</p>
+                            <p class="cart-product-cantidad">Cantidad: {{ this.quantity }}</p>
+                            <p class="cart-product-price">Precio: ${{ this.product.price }}</p>
+                         </div>
+                             <button onclick="eliminarProducto('{{../cart._id}}', '{{this.product._id}}')" class="cart-delete-btn">Eliminar</button>
+                    </div>
+                </li>
+ {{/each}}
+        </ul>
+            <p id="cart-total">Total del carrito: ${{ total }}</p>
+            <br>
+                        <div id="container-buy">
+                            <form action="/api/carts/purchase" method="post">
+                                {{!-- <input type="hidden" name="cid" value="{{mainUser.cart}}"> --}}
+                                <input type="submit" value="Finalizar compra">
+                            </form>
+                        </div>
+                        
+             </div>
 {{else}}
-    <p>Carrito no encontrado</p>
+    <p class="empty-cart">Carrito vacío</p>
 {{/if}}
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketServer.js"></script>
+<script src="/js/deleteproduct.js"></script>
+    
+    
+ 

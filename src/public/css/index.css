@@ -4,7 +4,7 @@ body{
         box-sizing: border-box;
         font-family: Arial, sans-serif;
         background-color: #f0f0f0;
-        height: 100vh;
+        height:100%;
     
 }
 
@@ -33,6 +33,7 @@ body{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
+
 #btn-profile button:hover {
     background-color: green;
 }
@@ -54,24 +55,46 @@ body{
 h2{
     text-align: center;
 }
+.quantity{
+    margin:20px;
+}
+#cartIcon {
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding:5px 5px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Borde redondeado */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar como bloque en línea */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 5px; /* Margen exterior */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 .product-card {
     border: 1px solid #ccc;
-    padding: 15px;
+    padding: 10px;
+    margin: 10px;
     border-radius: 8px;
     width: 300px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex; /* Usar flexbox */
+    flex-direction: column; /* Alinear el contenido verticalmente */
 }
 
 .product-image {
     max-width: 100%;
-    height: auto;
+    height: 200px; /* Tamaño fijo para las imágenes */
     border-radius: 4px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .product-description {
     margin-bottom: 10px;
+    height: 50px; /* Altura fija para la descripción */
+    overflow: hidden; /* Ocultar contenido que se desborda */
 }
 
 .product-price {
@@ -86,10 +109,12 @@ h2{
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    align-self: flex-end; /* Alinear el botón al final de la tarjeta */
 }
 
-#pagination{
+#pagination {
     text-align: center;
+    padding: 30px 30px;
 }
 
 #logout{

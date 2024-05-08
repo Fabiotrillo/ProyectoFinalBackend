@@ -68,6 +68,16 @@ class CartRepository {
           throw new Error;
         }
       }
+
+      async updateCart(cartId, updatedFields) {
+        try {
+            const updatedCart = await this.dao.updateCart(cartId, updatedFields, { new: true });
+            return updatedCart;
+        } catch (error) {
+            console.error('Error al intentar actualizar el carrito:', error.message);
+            throw new Error('Error al intentar actualizar el carrito');
+        }
+    }
   }
   
   export default CartRepository;

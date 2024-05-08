@@ -47,8 +47,11 @@ const schema = new mongoose.Schema({
         }
     ],
     profileImage: {
-        type:mongoose.Schema.Types.Mixed // Aquí puedes almacenar la ruta de la imagen de perfil
-      },
+        type: mongoose.Schema.Types.Mixed // Aquí puedes almacenar la ruta de la imagen de perfil
+    },
+    last_connection: {
+        type: Date
+    }
     
 })
 

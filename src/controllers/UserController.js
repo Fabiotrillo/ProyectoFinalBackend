@@ -1,15 +1,16 @@
+import { GetUserDto } from "../dao/dto/users.dto.js";
 import { UserService } from "../repository/index.js";
+import userModel from "../dao/db/models/users.model.js";
 import { userErrorDictionary, customizeError } from "../utils/errors.js";
+
 
 class UserController {
   static getUsers = async (req, res) => {
     try {
       const users = await UserService.getUsers();
+      const usersDTO = users.map((user) => new GetUserDto(user))
       req.logger.info("Obteniendo usuarios con éxito");
-      res.status(200).json({
-        status: "success",
-        users: users,
-      });
+      res.status(200).send({ status: "success", payload: usersDTO })
     } catch (error) {
       const formattedError = customizeError('FETCHING_USERS', error.message, userErrorDictionary);
       req.logger.error(`Error al obtener usuarios: ${formattedError}`);
@@ -26,7 +27,7 @@ class UserController {
     try {
       const result = await UserService.getUserById(userId);
       req.logger.info("Usuario encontrado con éxito");
-      res.status(200).json({
+      res.status(200).send({
         status: "success",
         msg: "Usuario encontrado",
         user: result,
@@ -69,22 +70,24 @@ class UserController {
   };
 
   static updateUser = async (req, res) => {
-    const userId = req.params.userId;
+    const uid = req.body.uid;
 
-    if (!userId) {
+    if (!uid) {
       return res.status(400).json({ error: "Usuario no encontrado" });
     }
 
-    const updatedUserData = req.body;
+    const newRole = req.body.role
 
     try {
-      const result = await UserService.updateUser(userId, updatedUserData);
-      req.logger.info(`Usuario actualizado con éxito, ID: ${userId}`);
-      res.status(200).json({
-        status: "success",
-        msg: `Usuario actualizado con ID: ${userId}`,
-        user: result.msg,
-      });
+      const user = await UserService.getUserById(uid)
+      if (newRole === user.role) {
+        return res.status(404).send({ error: 'Ya posee el usuario este rol' });
+      }
+      user.role = newRole
+
+      const result = await UserService.updateUser(uid, user);
+      req.logger.info(`Usuario actualizado con éxito, ID: ${uid}`);
+      return res.status(200).send({ message: 'Usuario actualizado', result });
     } catch (error) {
       const formattedError = customizeError('UPDATE_USER', error.message, userErrorDictionary);
       req.logger.error(`Error al actualizar usuario: ${formattedError}`);
@@ -232,27 +235,56 @@ class UserController {
            documents.some(doc => doc.name === 'AccountState');
 };
 
-  static deleteUser = async (req, res) => {
-    const userId = req.params.userId;
 
-    if (!userId) {
-      return res.status(400).json({ error: "Debe ingresar Id. Usuario" });
-    }
+
+  static deleteUser = async (req, res) => {
+    const uid = req.body.uid;
 
     try {
-      const result = await UserService.deleteUser(userId);
-      req.logger.info(`Usuario eliminado con éxito, ID: ${userId}`);
-      res.status(200).json({
-        status: "success",
-        msg: `Usuario eliminado con ID: ${userId}`,
-        user: result.msg,
-      });
+      const user = await UserService.getUserById(uid);
+
+      if (!user) {
+        return res.status(400).json({ error: "Debe ingresar Id. Usuario" });
+      }
+      const result = await UserService.deleteUser(user);
+      req.logger.info(`Usuario eliminado con éxito, ID: ${user}`);
+      res.status(200).send({ status: "success", payload: result })
     } catch (error) {
       const formattedError = customizeError('DELETE_USER', error.message, userErrorDictionary);
       req.logger.error(`Error al eliminar usuario: ${formattedError}`);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   };
+
+  static deleteInactiveUsers = async (req, res) => {
+    try {
+      // const users = await userService.getUsers()
+
+      // Obtener la fecha actual menos 10 minutos
+      const tenMinutesAgo = new Date();
+      tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
+      console.log(tenMinutesAgo)
+      // Consultar usuarios que no se han conectado en los últimos 10 minutos
+      const inactiveUsers = await userModel.find({ last_connection: { $lt: tenMinutesAgo } });
+      console.log(inactiveUsers)
+      if(inactiveUsers.length == 0){
+          throw { message: "No hay usuarios inactivos para borrar." };
+      }
+
+      // Eliminar los usuarios encontrados
+       await userModel.deleteMany({ _id: { $in: inactiveUsers.map(user => user._id) } });
+
+     
+
+      res.status(200).json({ status: "success", message: "Usuarios Eliminados con exito" });
+
+    } catch (error) {
+      res.status(500).send({ status: "error", error: "error eliminando usuarios" })
+
+    }
+  }
+
+  
 }
 
 export default UserController;

@@ -4,6 +4,7 @@ import { engine } from 'express-handlebars';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
+import { Server } from 'socket.io';
 
 import viewsRouter from './routes/views.router.js'
 import sessionRouter from './routes/sessions.router.js'
@@ -19,20 +20,39 @@ import { addLogger } from './utils/logger.js';
 
 
 
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(config.server.port, () => {
+
+
+const HttpServer = app.listen(config.server.port, () => {
     console.log(`Server is running on port ${config.server.port}`);
 });
 
+const io = new Server(HttpServer);
+io.on("connection", socket =>{
+
+    console.log('Nuevo cliente conectado');
+    socket.on('productRemoved', ({ cartId, productId }) => {
+        // Realizar la lógica para eliminar el producto del carrito
+        // Esto puede incluir la eliminación del producto de la base de datos, etc.
+        // Una vez que el producto se ha eliminado con éxito, puedes emitir un evento para informar a todos los clientes conectados
+        io.emit('productoEliminado', { cartId, productId });
+    });
+
+})
+
 connectDB();
+
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 app.use("/", express.static(__dirname + "/public"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use(express.static('node_modules'));
 app.use(addLogger)
 
 
@@ -58,10 +78,16 @@ app.use("/api/users", UserRouter);
 app.use("/api/sessions", sessionRouter);
 
 
+
+
+
+
 app.use("/", mockingRoutes)
 
 
-export {app}
+
+
+export {app, io}
 
 
 

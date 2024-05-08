@@ -18,7 +18,7 @@ class ProductManager {
         }
 
         const options = {
-            limit: limit ? parseInt(limit, 10) : 5,
+            limit: limit ? parseInt(limit, 10) : 6,
             page: page !== undefined ? parseInt(page, 10) : 1,
             sort: { price: sort === "asc" ? 1 : -1 },
             lean: true
@@ -61,7 +61,7 @@ class ProductManager {
     // Obtener un producto por ID
     getProductByID = async (pid) => {
         try {
-            const product = await productModel.findOne({ _id: pid });
+            const product = await productModel.findOne({ _id: pid }).lean();
             return product
         } catch (error) {
             console.error('Error al intentar obtener un producto por ID:', error.message);
@@ -87,7 +87,7 @@ class ProductManager {
     // Eliminar un producto por ID
     deleteProductByID = async (pid) => {
         try {
-            await productModel.findByIdAndDelete(pid);
+            await productModel.findByIdAndDelete(pid).lean();
             return {
                 status: "Success",
                 msg: `Producto eliminado correctamente.`,

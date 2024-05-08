@@ -17,10 +17,8 @@ export class GetUserDto{
     constructor(userDao){
         this.first_name = userDao.first_name;
         this.last_name = userDao.last_name;
-        this.FullName = userDao.FullName;
+        this.email = userDao.email
         this.age= userDao.age;
         this.role = userDao.role;
-        this.profileImage= userDao.profileImage;
-        this.cart=userDao.cart;
         }
 }

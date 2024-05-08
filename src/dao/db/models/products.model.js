@@ -29,11 +29,11 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: mongoose.Schema.Types.Mixed,
+    type:String,
     required: true
   },
   owner: String
-
+  
 });
 
 productSchema.plugin(mongoosePaginate)

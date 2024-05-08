@@ -35,3 +35,43 @@ export const sendRecoveryPass = async (userEmail, token)=>{
         `
     })
 };
+
+export const sendProductDeletedNotification = async (userEmail, productName, productId) => {
+    await transporter.sendMail({
+        from: config.mailing.user,
+        to: userEmail,
+        subject: "Notificación de Eliminación de Producto",
+        html: `
+        <div>
+            <h2>Tu producto ha sido eliminado</h2>
+            <p>El producto <strong>${productName}</strong> (ID: ${productId}) ha sido eliminado.</p>
+        </div>
+        `
+    });
+};
+
+
+export const sendPurchaseConfirmation = async (userEmail, ticketInfo) => {
+    // Construir el contenido del correo electrónico con la información del ticket
+    const ticketHTML = `
+        <div>
+            <h2>¡Gracias por tu compra!</h2>
+            <p>A continuación, encontrarás los detalles de tu compra:</p>
+            <ul>
+                <li><strong>Código de compra:</strong> ${ticketInfo.code}</li>
+                <li><strong>Fecha de compra:</strong> ${ticketInfo.purchase_datetime}</li>
+                <li><strong>Monto total:</strong> ${ticketInfo.amount}</li>
+                <!-- Agrega cualquier otra información relevante del ticket aquí -->
+            </ul>
+            <p>¡Esperamos que disfrutes de tus productos!</p>
+        </div>
+    `;
+
+    // Enviar el correo electrónico de confirmación de compra
+    await transporter.sendMail({
+        from: config.mailing.user,
+        to: userEmail,
+        subject: "Confirmación de Compra",
+        html: ticketHTML
+    });
+};
