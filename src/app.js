@@ -18,7 +18,9 @@ import { mockingRoutes } from './routes/mock.router.js';
 import { addLogger } from './utils/logger.js';
 
 
+const PORT = config.server.port || 8080
 
+const MONGO_URL = config.mongo.url
 
 
 const app = express();
